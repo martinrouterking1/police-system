@@ -5,7 +5,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
   const username = document.querySelector('input[type="text"]').value;
   const password = document.querySelector('input[type="password"]').value;
 
-  if (username === "ProSoSiGames" && password === "proposta") {
+  if (username === "proposta" && password === "411132829542572") {
 
     // Schermata "server"
     document.body.innerHTML = `
@@ -76,4 +76,5 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     }
   }
 });
+
 

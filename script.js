@@ -5,25 +5,52 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
   const password = document.querySelector('input[type="password"]').value;
 
   if (username === "sosigames" && password === "12345") {
-    // Accesso corretto
+
+    // Schermata "server"
     document.body.innerHTML = `
-      <div style="
+      <div id="terminal" style="
+        background-color:#0b1320;
         color:#4fa3ff;
         font-family: monospace;
         padding:40px;
-        background-color:#0b1320;
         height:100vh;
       ">
-        <p>[INFO] Connessione al database centrale...</p>
-        <p>[INFO] Verifica credenziali operatore...</p>
-        <p style="color:#7CFC00;">[OK] Accesso autorizzato.</p>
-        <p style="margin-top:30px;">Caricamento fascicolo riservato...</p>
       </div>
     `;
 
-    setTimeout(() => {
-      window.location.href = "caso.html";
-    }, 4000);
+    const terminal = document.getElementById("terminal");
+
+    const lines = [
+      "[INFO] Connessione al nodo SIC-PROXY-07...",
+      "[INFO] Stabilimento canale sicuro TLS...",
+      "[INFO] Verifica credenziali operatore...",
+      "[OK] Operatore riconosciuto: SOSI-GAMES",
+      "[OK] Accesso autorizzato.",
+      "[INFO] Caricamento fascicolo riservato...",
+      "[INFO] Decrittazione dati in corso..."
+    ];
+
+    let index = 0;
+
+    const interval = setInterval(() => {
+      if (index < lines.length) {
+        const p = document.createElement("p");
+        p.textContent = lines[index];
+
+        if (lines[index].includes("[OK]")) {
+          p.style.color = "#7CFC00";
+        }
+
+        terminal.appendChild(p);
+        index++;
+      } else {
+        clearInterval(interval);
+
+        setTimeout(() => {
+          window.location.href = "caso.html";
+        }, 2000);
+      }
+    }, 800); // ⏱️ velocità delle scritte (ms)
 
   } else {
     // Credenziali errate

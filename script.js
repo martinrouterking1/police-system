@@ -32,26 +32,32 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     ];
 
     let index = 0;
+    const delay = 800; // ⏱️ millisecondi tra una riga e l'altra
 
-    const interval = setInterval(() => {
-      if (index < lines.length) {
-        const p = document.createElement("p");
-        p.textContent = lines[index];
-
-        if (lines[index].includes("[OK]")) {
-          p.style.color = "#7CFC00";
-        }
-
-        terminal.appendChild(p);
-        index++;
-      } else {
-        clearInterval(interval);
-
+    function printNextLine() {
+      if (index >= lines.length) {
+        // finito il caricamento → vai al caso
         setTimeout(() => {
           window.location.href = "caso.html";
         }, 2000);
+        return;
       }
-    }, 800); // ⏱️ velocità delle scritte (ms)
+
+      const p = document.createElement("p");
+      p.textContent = lines[index];
+
+      if (lines[index].includes("[OK]")) {
+        p.style.color = "#7CFC00";
+      }
+
+      terminal.appendChild(p);
+      index++;
+
+      setTimeout(printNextLine, delay);
+    }
+
+    // Avvio sequenza
+    printNextLine();
 
   } else {
     // Credenziali errate
@@ -70,4 +76,3 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     }
   }
 });
-

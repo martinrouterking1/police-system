@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Modulo Geolocalizzazione</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <style>
+    body {
+      background-color: #050a14;
+      color: #7CFC00;
+      font-family: monospace;
+      padding: 20px;
+    }
+
+    .box {
+      border: 1px solid #7CFC00;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      background-color: rgba(10,20,40,0.85);
+    }
+
+    #map {
+      height: 400px;
+      margin-top: 15px;
+      border: 1px solid #7CFC00;
+    }
+
+    .hidden {
+      display: none;
+      margin-top: 20px;
+      color: #4fa3ff;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #050a14;
+      color: #7CFC00;
+      border: 1px solid #7CFC00;
+      font-family: monospace;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #7CFC00;
+      color: #050a14;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h1>🗺️ ANALISI GEO-CRIMINALE</h1>
+  <p>
+    I dati raccolti indicano che il furto è avvenuto in un punto preciso.<br>
+    Seleziona sulla mappa il luogo che ritieni corretto.
+  </p>
+
+  <div id="map"></div>
+
+  <p id="feedback" style="margin-top:10px;"></p>
+
+  <div id="secret" class="hidden">
+    <h2>📍 Luogo confermato</h2>
+    <p>
+      Coordinate validate.<br>
+      Sul posto è presente un ulteriore indizio fisico.
+    </p>
+    <p>
+      <strong>Istruzione operativa:</strong><br>
+      Recarsi sul luogo e cercare una busta contrassegnata con il simbolo ♥.
+    </p>
+  </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // 🔴 COORDINATE REALI (CAMBIALE)
+  const targetLat = 45.464211;
+  const targetLng = 9.191383;
+
+  const tolerance = 50; // metri
+
+  const map = L.map('map').setView([targetLat, targetLng], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  let marker;
+
+  function distance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const φ1 = lat1 * Math.PI/180;
+    const φ2 = lat2 * Math.PI/180;
+    const Δφ = (lat2-lat1) * Math.PI/180;
+    const Δλ = (lon2-lon1) * Math.PI/180;
+
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return R * c;
+  }
+
+  map.on('click', function(e) {
+    if (marker) map.removeLayer(marker);
+
+    marker = L.marker(e.latlng).addTo(map);
+
+    const d = distance(
+      e.latlng.lat,
+      e.latlng.lng,
+      targetLat,
+      targetLng
+    );
+
+    const feedback = document.getElementById("feedback");
+
+    if (d <= tolerance) {
+      feedback.textContent = "✔ Coordinate compatibili con i dati investigativi.";
+      feedback.style.color = "#7CFC00";
+      document.getElementById("secret").style.display = "block";
+    } else {
+      feedback.textContent = "✖ Coordinate non compatibili. Distanza: " + Math.round(d) + " m";
+      feedback.style.color = "#ff4f4f";
+    }
+  });
+</script>
+
+</body>
+</html>

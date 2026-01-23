@@ -29,6 +29,21 @@
       color: #4fa3ff;
       margin-top: 15px;
     }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #7CFC00;
+      color: #050a14;
+      border: none;
+      font-family: monospace;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #4fa3ff;
+      color: #050a14;
+    }
   </style>
 </head>
 <body>
@@ -39,24 +54,33 @@
       Canale unidirezionale attivo<br>
       Non interrompere la trasmissione
     </p>
+
+    <!-- Bottone di backup se autoplay non parte -->
+    <button onclick="document.getElementById('audio').play()">
+      ▶️ Avvia trasmissione
+    </button>
   </div>
 
   <!-- AUDIO -->
   <audio id="audio" autoplay>
-    <!-- USA UNO DEI DUE, A SECONDA DEL FORMATO -->
     <source src="audio/commissario.mp3" type="audio/mpeg">
-    <!-- <source src="audio/commissario.mp4" type="audio/mp4"> -->
   </audio>
 
-  <!-- REDIRECT AUTOMATICO -->
+  <!-- SCRIPT REDIRECT AUTOMATICO -->
   <script>
     const audio = document.getElementById("audio");
 
+    // Redirect quando finisce l'audio
     audio.addEventListener("ended", () => {
-      // breve pausa per effetto "linea chiusa"
       setTimeout(() => {
         window.location.href = "index.html";
       }, 1200);
+    });
+
+    // Fallback autoplay: prova a partire subito
+    audio.play().catch(() => {
+      // Se il browser blocca autoplay, userà il bottone
+      console.log("Autoplay bloccato, usa il bottone per avviare l'audio.");
     });
   </script>
 

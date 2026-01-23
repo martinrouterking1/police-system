@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Linea Riservata</title>
+
   <style>
     body {
       background-color: #050a14;
@@ -12,27 +13,50 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
       text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 30px;
+      border: 1px solid #7CFC00;
+      background-color: rgba(10, 20, 40, 0.85);
+    }
+
+    .small {
+      font-size: 12px;
+      color: #4fa3ff;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
 
-  <div>
-    <p>📞 Connessione al canale vocale…</p>
-    <p style="font-size:12px; margin-top:10px;">
-      Canale unidirezionale attivo
+  <div class="container">
+    <p>📞 Connessione al canale vocale riservato…</p>
+    <p class="small">
+      Canale unidirezionale attivo<br>
+      Non interrompere la trasmissione
     </p>
   </div>
 
-  <audio autoplay>
+  <!-- AUDIO -->
+  <audio id="audio" autoplay>
+    <!-- USA UNO DEI DUE, A SECONDA DEL FORMATO -->
     <source src="audio/commissario.mp3" type="audio/mpeg">
+    <!-- <source src="audio/commissario.mp4" type="audio/mp4"> -->
   </audio>
 
+  <!-- REDIRECT AUTOMATICO -->
   <script>
-    const audio = document.querySelector("audio");
+    const audio = document.getElementById("audio");
+
     audio.addEventListener("ended", () => {
-      window.location.href = "caso.html";
+      // breve pausa per effetto "linea chiusa"
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1200);
     });
   </script>
 

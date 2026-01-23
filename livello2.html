@@ -46,7 +46,7 @@
 
   <div class="box">
     <h1>🔒 ACCESSO LIVELLO 2</h1>
-    <p>Sezione classificata. Inserire codice di autorizzazione per conferma identità agente.</p>
+    <p>Sezione classificata. Inserire nominativo oggetto rubato per conferma identità agente.</p>
 
     <input type="text" id="code" placeholder="Codice di accesso">
     <button onclick="checkCode()">AUTORIZZA</button>
@@ -75,7 +75,7 @@
     function checkCode() {
       const code = document.getElementById("code").value;
 
-      if (code === "cuore") {
+      if (code === "cardia") {
         document.getElementById("secret").style.display = "block";
       } else {
         alert("❌ Codice non valido. Tentativo registrato.");
@@ -85,6 +85,7 @@
 
 </body>
 </html>
+
 
 
 

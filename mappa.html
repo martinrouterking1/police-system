@@ -55,10 +55,15 @@
 <body>
 
 <div class="box">
-  <h1>🗺️ ANALISI GEO-CRIMINALE</h1>
+  <h1>🗺️ ANALISI GEO-TERRITORIALE</h1>
   <p>
     I dati raccolti indicano che il furto è avvenuto in un punto preciso.<br>
     Seleziona sulla mappa il luogo che ritieni corretto.
+  </p>
+
+  <p>
+    <strong>Tentativi disponibili:</strong>
+    <span id="tentativi">3</span>
   </p>
 
   <div id="map"></div>
@@ -82,12 +87,13 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-  // 🔴 COORDINATE REALI (CAMBIALE)
+  // 🎯 COORDINATE CORRETTE
   const targetLat = 41.836750;
   const targetLng = 12.518583;
 
-
   const tolerance = 100; // metri
+  let tentativiRimasti = 3;
+  let casoChiuso = false;
 
   const map = L.map('map').setView([targetLat, targetLng], 13);
 
@@ -113,8 +119,9 @@
   }
 
   map.on('click', function(e) {
-    if (marker) map.removeLayer(marker);
+    if (casoChiuso) return;
 
+    if (marker) map.removeLayer(marker);
     marker = L.marker(e.latlng).addTo(map);
 
     const d = distance(
@@ -130,15 +137,26 @@
       feedback.textContent = "✔ Coordinate compatibili con i dati investigativi.";
       feedback.style.color = "#7CFC00";
       document.getElementById("secret").style.display = "block";
+      casoChiuso = true;
     } else {
-      feedback.textContent = "✖ Coordinate non compatibili. Distanza: " + Math.round(d) + " m";
-      feedback.style.color = "#ff4f4f";
+      tentativiRimasti--;
+      document.getElementById("tentativi").textContent = tentativiRimasti;
+
+      if (tentativiRimasti > 0) {
+        feedback.textContent =
+          "✖ Coordinate non compatibili. Distanza: " +
+          Math.round(d) +
+          " m";
+        feedback.style.color = "#ff4f4f";
+      } else {
+        feedback.textContent =
+          "⛔ Tentativi esauriti. Accesso alla mappa bloccato.";
+        feedback.style.color = "#ff4f4f";
+        casoChiuso = true;
+      }
     }
   });
 </script>
 
 </body>
 </html>
-
-
-

@@ -50,12 +50,18 @@
       background: #7CFC00;
       color: #050a14;
     }
+
+    /* Colore tentativi di default */
+    #tentativi {
+      font-weight: bold;
+      color: #4fa3ff; /* azzurro iniziale */
+    }
   </style>
 </head>
 <body>
 
 <div class="box">
-  <h1>🗺️ ANALISI GEO-TERRITORIALE</h1>
+  <h1>🗺️ ANALISI GEO-CRIMINALE</h1>
   <p>
     I dati raccolti indicano che il furto è avvenuto in un punto preciso.<br>
     Seleziona sulla mappa il luogo che ritieni corretto.
@@ -118,6 +124,19 @@
     return R * c;
   }
 
+  function aggiornaColoreTentativi() {
+    const tentativiEl = document.getElementById("tentativi");
+    if (tentativiRimasti === 3) {
+      tentativiEl.style.color = "#4fa3ff"; // azzurro
+    } else if (tentativiRimasti === 2) {
+      tentativiEl.style.color = "#ffa500"; // arancione
+    } else if (tentativiRimasti === 1) {
+      tentativiEl.style.color = "#ff4f4f"; // rosso
+    }
+  }
+
+  aggiornaColoreTentativi(); // colore iniziale
+
   map.on('click', function(e) {
     if (casoChiuso) return;
 
@@ -141,6 +160,7 @@
     } else {
       tentativiRimasti--;
       document.getElementById("tentativi").textContent = tentativiRimasti;
+      aggiornaColoreTentativi(); // aggiorna colore dinamicamente
 
       if (tentativiRimasti > 0) {
         feedback.textContent =

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Linea Riservata</title>
+  <style>
+    body {
+      background-color: #050a14;
+      color: #7CFC00;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <p>📞 Connessione al canale vocale…</p>
+    <p style="font-size:12px; margin-top:10px;">
+      Canale unidirezionale attivo
+    </p>
+  </div>
+
+  <audio autoplay>
+    <source src="audio/commissario.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const audio = document.querySelector("audio");
+    audio.addEventListener("ended", () => {
+      window.location.href = "caso.html";
+    });
+  </script>
+
+</body>
+</html>
